@@ -14,19 +14,20 @@ def calculate_demographic_data(print_data=True):
     average_age_men = round(df[df['sex'] == 'Male']['age'].mean(), 1)
 
     # What is the percentage of people who have a Bachelor's degree?
-    percentage_bachelors = (df[df['education'] == 'Bachelors'].shape[0] / df.shape[0]) * 100
+    percentage_bachelors = round((df[df['education'] == 'Bachelors'].shape[0] / df.shape[0]) * 100, 1)
+
 
     # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
     # What percentage of people without advanced education make more than 50K?
 
     # with and without `Bachelors`, `Masters`, or `Doctorate`
     higher_education =  df['education'].isin(['Bachelors', 'Masters', 'Doctorate'])
-    lower_education =  df['education'].isin(['Bachelors', 'Masters', 'Doctorate'])
+    lower_education = ~higher_education
 
     # percentage with salary >50K
     higher_education_rich =higher_education_rich = round((df[higher_education & (df['salary'] == '>50K')].shape[0] / df[higher_education].shape[0]) * 100, 1)
 
-    lower_education_rich = round(df[~higher_education & (df['salary'] == '>50K')].shape[0] / df[~higher_education].shape[0]) * 100
+    lower_education_rich = round((df[lower_education & (df['salary'] == '>50K')].shape[0] / df[lower_education].shape[0]) * 100, 1)
 
     # What is the minimum number of hours a person works per week (hours-per-week feature)?
     min_work_hours = df['hours-per-week'].min()
